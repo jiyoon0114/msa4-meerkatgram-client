@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import PostIndex from "../pages/posts/PostIndex.vue";
 import MyError from "../pages/errors/MyError.vue";
+import Login from "../pages/auth/Login.vue";
 
 const routes = [
   {
@@ -8,6 +9,11 @@ const routes = [
     // 루트로 와도 /posts 주소로 감
     redirect: '/posts'
   },
+  {
+    path: '/login',
+    component: Login
+  },
+  // 게시물 관련
   {
     path: '/posts',
     component: PostIndex
