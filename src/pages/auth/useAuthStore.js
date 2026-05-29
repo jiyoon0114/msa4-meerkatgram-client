@@ -23,7 +23,6 @@ export const useAuthStore = defineStore('authStore', () => {
       const url = '/api/login';
 
       const res = await myAxios.post(url, loginForm);
-      console.log(res);
       const data = res.data.data;
       accessToken.value = data.accessToken;
       userInfo.value = data.user;
@@ -42,6 +41,19 @@ export const useAuthStore = defineStore('authStore', () => {
     }
   }
 
+  const reissue = async () => {
+    try {
+      const url = "/api/reissue-token";
+      const res = await myAxios.post(url);
+      const data = res.data.data;
+      accessToken.value = data.accessToken;
+      userInfo.value = data.user;
+      isLoggedIn.value = true;
+    } catch (error) {
+      clearAuthStore();
+      throw error;
+    }
+  }
   return {
     //State
     isLoggedIn,
@@ -52,6 +64,7 @@ export const useAuthStore = defineStore('authStore', () => {
 
     // Actions
     login,
+    reissue
   }
 
 });
