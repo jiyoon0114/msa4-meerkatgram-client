@@ -43,8 +43,9 @@ myAxios.interceptors.request.use(async (config) => {
       }
     }
   } 
-
-  config.headers.Authorization = `Bearer ${accessToken}`;
+  if(accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
   return config;
 });
 

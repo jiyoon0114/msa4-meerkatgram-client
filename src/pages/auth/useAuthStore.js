@@ -51,9 +51,20 @@ export const useAuthStore = defineStore('authStore', () => {
       isLoggedIn.value = true;
     } catch (error) {
       clearAuthStore();
-      throw error;
     }
   }
+  
+  const logout = async () => {
+    try {
+      const url = "/api/logout";
+      await myAxios.post(url);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      clearAuthStore();
+    }
+  }
+
   return {
     //State
     isLoggedIn,
@@ -64,7 +75,8 @@ export const useAuthStore = defineStore('authStore', () => {
 
     // Actions
     login,
-    reissue
+    reissue,
+    logout
   }
 
 });

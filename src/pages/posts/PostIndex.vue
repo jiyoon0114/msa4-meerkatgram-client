@@ -2,6 +2,7 @@
 import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import MyButton from '../../components/button/MyButton.vue';
 import usePostIndexStore from '../../store/post/usePostIndexStore';
+import { useRouter } from 'vue-router';
 
 // ---------------- 스토어로 이관 start -----------------------
 const posts = ref([]);
@@ -30,11 +31,16 @@ let currentPage = 0;
 // }
 // ---------------- 스토어로 이관 end -----------------------
 const postIndexStore = usePostIndexStore();
-
+const router = useRouter();
 
 const getNextPage = async () => {
   await postIndexStore.getPostPagination(postIndexStore.getNextPageNumber);
 }
+
+const redirectShow = (id) => {
+  router.push(`/posts/${id}`)
+}
+
 // 라이프 사이클
 onBeforeMount(postIndexStore.getPostPagination);
 onBeforeUnmount(postIndexStore.clearPostIndex);
@@ -47,6 +53,7 @@ onBeforeUnmount(postIndexStore.clearPostIndex);
       v-for="item in postIndexStore.items"
       :key="item.id"
       :style="{backgroundImage: `url(${item.image})`}"
+      @click="redirectShow(item.id)"
     ></div>
   </div>
   <MyButton 
