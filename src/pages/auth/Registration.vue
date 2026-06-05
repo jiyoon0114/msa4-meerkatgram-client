@@ -6,10 +6,12 @@ import { useFileStore } from '../../store/file/useFileStore.js';
 import { useAuthStore } from './useAuthStore.js';
 import { useRouter } from 'vue-router';
 import registrationValidator from '../../util/validator/domain/auth/registrationValidator.js';
+import { useMyErrorStore } from '../../store/error/useMyErrorStore.js';
 
 const fileStore = useFileStore();
 const authStore = useAuthStore();
 const router = useRouter();
+const myErrorStore = useMyErrorStore();
 
 // 선택한 파일을 화면에 보여주기 위한 임시 URL 저장
 const preview = ref(null);
@@ -54,9 +56,8 @@ const handleSubmit = async () => {
       alert("잘못된 양식입니다");
     }
     else {
-      alert("알 수 없는 오류가 발생했습니다. 다시 시도해주세요.");
-      console.error(error);
-      router.replace("/");
+      myErrorStore.setErrorInfo(error);
+      router.replace('/error');
     }
   }
 }

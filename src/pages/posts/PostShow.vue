@@ -3,6 +3,7 @@ import { onBeforeMount, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePostShowStore } from '../../store/post/usePostShowStore';
 import { useAuthStore } from '../auth/useAuthStore';
+import { useMyErrorStore } from '../../store/error/useMyErrorStore';
 
 // route.params에는 라우터에서 정의한 동적 세그먼트들이 담겨있음
 // router는 라우터를 조작할 수 있는 객체, route는 현재 라우터에 대한 정보가 담긴 객체
@@ -10,13 +11,14 @@ import { useAuthStore } from '../auth/useAuthStore';
 const route = useRoute();
 const postShowStore = usePostShowStore();
 const authStore = useAuthStore();
+const myErrorStore = useMyErrorStore();
 
 onBeforeMount(async () => {
   try {
     await postShowStore.getPost(route.params.id);
   } catch (error) {
-    const msg = error?.response?.message ? error.response?.message : "포스트획득 실패"
-    alert(msg);
+    myErrorStore.setErrorInfo(error);
+    router.replace('/error');
   }
 });
 

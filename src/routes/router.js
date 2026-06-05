@@ -41,6 +41,12 @@ const routes = [
     path:'/registration',
     component: Registration,
     meta: setMeta(false, true)
+  },
+  // 에러 관련
+  {
+    path: '/error',
+    component: MyError,
+    meta: setMeta(false, false)
   }
 ];
 

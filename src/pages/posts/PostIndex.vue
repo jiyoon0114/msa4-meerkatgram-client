@@ -1,14 +1,11 @@
 <script setup>
-import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
+import { onBeforeMount, onBeforeUnmount } from 'vue';
 import MyButton from '../../components/button/MyButton.vue';
 import usePostIndexStore from '../../store/post/usePostIndexStore';
 import { useRouter } from 'vue-router';
+import { useMyErrorStore } from '../../store/error/useMyErrorStore.js';
 
 // ---------------- 스토어로 이관 start -----------------------
-const posts = ref([]);
-const isLastPage = ref(false);
-let currentPage = 0;
-
 // 함수 정의
 // const getPostPagination = async (page = 1) => {
 //   // 마지막 페이지가 아닐 경우만 실행
@@ -32,9 +29,19 @@ let currentPage = 0;
 // ---------------- 스토어로 이관 end -----------------------
 const postIndexStore = usePostIndexStore();
 const router = useRouter();
+const myErrorStore = useMyErrorStore();
+
+const getPagination = async (page = 1) => {
+  try {
+    await postIndexStore.getPostPagination(page);
+  } catch (error) {
+    myErrorStore.setErrorInfo(error)
+    router.replace('/error');
+  }
+}
 
 const getNextPage = async () => {
-  await postIndexStore.getPostPagination(postIndexStore.getNextPageNumber);
+  await getPagination(postIndexStore.getNextPageNumber)
 }
 
 const redirectShow = (id) => {
@@ -42,7 +49,7 @@ const redirectShow = (id) => {
 }
 
 // 라이프 사이클
-onBeforeMount(postIndexStore.getPostPagination);
+onBeforeMount(() => getPagination());
 onBeforeUnmount(postIndexStore.clearPostIndex);
 </script>
 
