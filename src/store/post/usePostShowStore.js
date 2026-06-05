@@ -19,8 +19,13 @@ export const usePostShowStore = defineStore('postShowStore', () => {
       throw error;    
     }
   }
+
+  const clearPostShow = () => {
+    post.value = null;
+  }
   return {
     post,
-    getPost
+    getPost,
+    clearPostShow
   }
 });
