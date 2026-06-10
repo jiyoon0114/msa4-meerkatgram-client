@@ -3,6 +3,7 @@ import { onBeforeUnmount, reactive, ref } from 'vue';
 import MyButton from '../../components/button/MyButton.vue';
 import { useFileStore } from '../../store/file/useFileStore';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../auth/useAuthStore.js';
 
 // 선택한 파일을 화면에 보여주기 위한 임시 URL 저장
 const preview = ref(null);
@@ -10,6 +11,7 @@ const preview = ref(null);
 const selectedFile = ref(null);
 const fileStore = useFileStore();
 const router = useRouter();
+const authStore = useAuthStore();
 
 const requestPostLoad = reactive({
   content: null,
@@ -49,6 +51,7 @@ const handleSubmit = async () => {
   try {
     if(requestPostLoad.content && requestPostLoad.image) {
       const res = await fileStore.submitUploadPost(requestPostLoad);
+      authStore.reissue();
       router.push(`/posts/${res.data.id}`)
     }
     else {
