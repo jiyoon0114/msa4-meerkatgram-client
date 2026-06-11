@@ -88,6 +88,7 @@ onBeforeUnmount(() => {
     URL.revokeObjectURL(preview.value);
   }
 });
+
 </script>
 
 <template>

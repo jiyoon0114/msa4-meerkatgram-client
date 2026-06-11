@@ -1,7 +1,13 @@
 <script setup>
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '../pages/auth/useAuthStore';
 
 const authStore = useAuthStore();
+const router = useRouter();
+
+const redirectUpload= () => {
+  router.push(`/posts/upload`)
+}
 </script>
 
 <template>
@@ -23,6 +29,7 @@ const authStore = useAuthStore();
         <div 
           class="bg-image-square redirect-icon-posts-create"
           style="background-image: url('/icon/plus-sign.png');"
+          @click="redirectUpload"
         ></div>
         <div 
           class="bg-image-square redirect-icon-users-info"
